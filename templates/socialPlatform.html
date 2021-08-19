@@ -8,8 +8,14 @@ slangCountGraph,
 modal,
 form %}
 
+
   <div class="jumbotron jumbotron-fluid">
       <div class="container home-width mt-4">
+        {% if error == "inputerror" %}
+          <p>{{error}}</p>
+          <h1>POG</p>
+        {% endif %}
+
         <h1 class="mt-5" style="color: black; font-size: 4rem">{{socialPlatform | capitalize}}</h1>
         <p>
           Upload your downloaded {{socialPlatform | capitalize}} chat history (JSON format) and see a variety of message statistics!
@@ -65,13 +71,25 @@ form %}
           {% if showDownload %}
           <p>Input your {{socialPlatform | capitalize}} username below and download a CSV file!</p>
 
-          <form>
-              <input class="text-input" type="text" id="fname" name="fname" placeholder="Username">
-              <button class="round-btn-{{socialPlatform}}" type="submit" value="Submit">Submit</button>
-              <a class="round-btn-{{socialPlatform}}" style="text-decoration: none; margin-top: 100px" href="{{url_for('getCSV')}}">Download</a>
+          <form id="uploadForm" action="#" method="POST">
+              <div class="sidebyside" style="display:flex;">
+              <div id="select-dropdown">
+              <select class="selectBox" name="fname" id="fname" style="margin-right: 10px">
+                {% for name in names %}
+                  <option value="{{name}}">{{name}}</option>
+                {% endfor %}
+                
+              </select>
+              <span class="custom-arrow">&#9660;</span>
+              </div>
+              
+              
+              
+              <button type="submit" class="round-btn-{{socialPlatform}} value="Submit">Download</button> 
+              </div>
             </div>
           </form>
-
+          
           {% endif %}
 
           {% call modal("slangMeaning", "Slang Meaning") %}
@@ -81,9 +99,7 @@ form %}
               {{template["slangMeaning"][keys]}}</p>
           {% endfor %}
           {% endcall %}
-        </div>
-
-      
+        </div>  
 
       </div>
       

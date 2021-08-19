@@ -206,4 +206,47 @@ svg {
   max-width: 62.5%
 }
 
+
+/* .selectWrapper {
+  border-radius: 2rem;
+  display: inline-block;
+  overflow: hidden;
+  border: 1px solid #181818;
+
+}
+
+.selectBox {
+  height: 2rem;
+  border: 0px;
+  outline: none;
+} */
+
+select {
+  padding: 0.8em 2em 0.8em 1em;
+  color: black;
+  font-size: 18px;
+  border-radius: 2rem;
+  appearance: none;
+  outline: none;
+
+}
+
+#select-dropdown {
+  position: relative;
+}
+
+.custom-arrow {
+  display: block;
+  height: 1rem;
+  width: 1rem;
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  pointer-events: none;
+}
+
+
+
+
 /*# sourceMappingURL=style.css.map */
+

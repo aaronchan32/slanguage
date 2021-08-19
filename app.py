@@ -1,29 +1,35 @@
 
 from flask import Flask, render_template, request, send_file
 from analyzeSlang import *
+import time
 
 app = Flask(__name__)
 
 analyzedData = None
 template = None
 socialMediaRender = None
+error = None
 
 
 @app.route("/")
 def home():
     return render_template("home.html")
 
+# @app.route('/getCSV')
+# def getCSV():
+#     time.sleep(3)
+#     global error
+#     if analyzedData.getUserExists():
+#         analyzedData.falseUserExists()
+#         return send_file('messages.csv', mimetype='text/csv', download_name="messages.csv", as_attachment=True)
+#     print("error")
+#     error = "inputerror"
+#     return socialMediaRender
+
 
 @app.route("/facebook", methods = ["GET", "POST"])  # http://127.0.0.1:5000/
 def facebook():
     return socialMedia("socialPlatform.html", "facebook")
-
-
-@app.route('/getCSV')
-def getCSV():
-    if analyzedData.userExist:
-        return send_file('messages.csv', mimetype='text/csv', download_name="messages.csv", as_attachment=True)
-         
 
 
 @app.route("/discord", methods=["GET", "POST"])
@@ -44,29 +50,31 @@ def socialMedia(nameHTML, socialPlatform):
     global analyzedData
     global template
     global socialMediaRender
+    global names
 
-    if request.method == "GET" and ('fname' in request.args):  
-        # try:
-            print("Request.args:", request.args)
-            senderName = request.args['fname']
-            print("Sender Name:", senderName)
+    if request.method == "POST" and (request.form.get('fname')):  #When form is submitted (When user press Download button)
+        # try:              
+            senderName = request.form.get('fname')
             analyzedData.createCSV(senderName)
-            
-            return render_template(nameHTML, template = analyzedData.getTemplateSetup(), socialPlatform = socialPlatform, showDownload = True)
+            return send_file('messages.csv', mimetype='text/csv', download_name="messages.csv", as_attachment=True)
 
         # except NameError:
         #     return render_template(nameHTML, template = None)
 
-    elif request.method == "POST" and (not ('fname' in request.args)):
+    elif request.method == "POST":
         #try:
             if socialPlatform == "instagram" or socialPlatform == "facebook":
+                print("request form", request.form)
                 analyzedData = AnalyzeSlang("facebook")
-                socialMediaRender = render_template(nameHTML, template = analyzedData.getTemplateSetup(), socialPlatform = socialPlatform, showDownload = True)
+                names = analyzedData.getParticipantNames()
+                print("does user exist", analyzedData.getUserExists())
+                socialMediaRender = render_template(nameHTML, template = analyzedData.getTemplateSetup(), socialPlatform = socialPlatform, showDownload = True, error = error, names=names)
                 return socialMediaRender
 
             if socialPlatform == "discord":
                 analyzedData = AnalyzeSlang("discord")
-                socialMediaRender = render_template(nameHTML, template = analyzedData.getTemplateSetup(), socialPlatform = socialPlatform, showDownload = True)
+                names = analyzedData.getParticipantNames()
+                socialMediaRender = render_template(nameHTML, template = analyzedData.getTemplateSetup(), socialPlatform = socialPlatform, showDownload = True, error = error, names=names)
                 return socialMediaRender
 
         #except:

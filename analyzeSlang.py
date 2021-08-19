@@ -10,7 +10,7 @@ class AnalyzeSlang:
         self.__socialMedia = socialMedia
         self.__slangs = None
         self.__slangDict = None
-        self.__data = None
+        self.__data = None          #Nested Dictionary of messages, timestamp, username
         self.__names = []
         self.__wordCount = {}
         self.__topTen = {}
@@ -158,11 +158,11 @@ class AnalyzeSlang:
                     self.__slangCountPerPerson[slang] = [slangCount]
 
     def createCSV(self, userName):
-
+        print("USername:",userName)
         for name in self.__names:
             if userName == name:
-                self.userExist = True
-                csvFile = open("messages.csv", "w", newline='')
+                self.__userExists = True
+                csvFile = open("messages.csv", "w", encoding='utf-8', newline='')
                 csvWriter = csv.writer(csvFile)
                 csvWriter.writerow(["Content", "Context"])
                 for message in self.__data["messages"]:
@@ -174,7 +174,7 @@ class AnalyzeSlang:
                             csvWriter.writerow([message["content"]])
                 break
 
-        if not self.userExist:
+        if not self.__userExists:
             raise NameError("Invalid Name")
 
     def getTemplateSetup(self):
@@ -192,3 +192,6 @@ class AnalyzeSlang:
                     }
 
         return(template)
+
+    def getParticipantNames(self):
+        return self.__names

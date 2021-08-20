@@ -17,7 +17,6 @@ class AnalyzeSlang:
         self.__totalSent = None
         self.__topTenSlangWords = {}
         self.__slangCountPerPerson = {}
-        self.__userExists = False
 
         self.__getJSON() 
         self.__getSlang()

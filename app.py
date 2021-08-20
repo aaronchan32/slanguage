@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, flash
 from analyzeSlang import *
 import time
 
@@ -14,18 +14,6 @@ error = None
 @app.route("/")
 def home():
     return render_template("home.html")
-
-# @app.route('/getCSV')
-# def getCSV():
-#     time.sleep(3)
-#     global error
-#     if analyzedData.getUserExists():
-#         analyzedData.falseUserExists()
-#         return send_file('messages.csv', mimetype='text/csv', download_name="messages.csv", as_attachment=True)
-#     print("error")
-#     error = "inputerror"
-#     return socialMediaRender
-
 
 @app.route("/facebook", methods = ["GET", "POST"])  # http://127.0.0.1:5000/
 def facebook():
@@ -52,22 +40,16 @@ def socialMedia(nameHTML, socialPlatform):
     global socialMediaRender
     global names
 
-    if request.method == "POST" and (request.form.get('fname')):  #When form is submitted (When user press Download button)
-        # try:              
+    if request.method == "POST" and (request.form.get('fname')):  #When form is submitted (When user press Download button)            
             senderName = request.form.get('fname')
             analyzedData.createCSV(senderName)
             return send_file('messages.csv', mimetype='text/csv', download_name="messages.csv", as_attachment=True)
 
-        # except NameError:
-        #     return render_template(nameHTML, template = None)
-
     elif request.method == "POST":
-        #try:
+        try:
             if socialPlatform == "instagram" or socialPlatform == "facebook":
-                print("request form", request.form)
                 analyzedData = AnalyzeSlang("facebook")
                 names = analyzedData.getParticipantNames()
-                print("does user exist", analyzedData.getUserExists())
                 socialMediaRender = render_template(nameHTML, template = analyzedData.getTemplateSetup(), socialPlatform = socialPlatform, showDownload = True, error = error, names=names)
                 return socialMediaRender
 
@@ -77,11 +59,11 @@ def socialMedia(nameHTML, socialPlatform):
                 socialMediaRender = render_template(nameHTML, template = analyzedData.getTemplateSetup(), socialPlatform = socialPlatform, showDownload = True, error = error, names=names)
                 return socialMediaRender
 
-        #except:
-            #return render_template(nameHTML, template = None)
+        except:
+            return render_template(nameHTML, template = None, socialPlatform = socialPlatform, error=True)
 
-    return render_template(nameHTML, template = None, socialPlatform = socialPlatform, showDownload = False)
+    return render_template(nameHTML, template = None, socialPlatform = socialPlatform)
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run()

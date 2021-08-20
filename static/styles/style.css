@@ -1,7 +1,7 @@
 p {
   font-size: 20px;
-  font-family: 'Roboto', sans-serif;
   font-weight: 300;
+  margin-bottom: 0;
 }
 
 .p-white {
@@ -206,21 +206,6 @@ svg {
   max-width: 62.5%
 }
 
-
-/* .selectWrapper {
-  border-radius: 2rem;
-  display: inline-block;
-  overflow: hidden;
-  border: 1px solid #181818;
-
-}
-
-.selectBox {
-  height: 2rem;
-  border: 0px;
-  outline: none;
-} */
-
 select {
   padding: 0.8em 2em 0.8em 1em;
   color: black;
@@ -246,7 +231,4 @@ select {
 }
 
 
-
-
-/*# sourceMappingURL=style.css.map */
 

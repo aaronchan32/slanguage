@@ -1,130 +1,135 @@
 {% extends "base.html" %}
-
 {% block content %}
+{% from 'macros.html' import pieChart, msgWordsCountGraph, slangCountGraph, modal, form %}
 
-{% from 'macros.html' import pieChart,
-msgWordsCountGraph,
-slangCountGraph,
-modal,
-form %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container home-width mt-4">
+    {% if error == "inputerror" %}
+    <p>{{error}}</p>
+    <h1>POG</h1>
+    {% endif %}
+
+    <h1 class="mt-5" style="color: black; font-size: 4rem">
+      {{socialPlatform | capitalize}}
+    </h1>
+    <p>
+      Upload your downloaded {{socialPlatform | capitalize}} chat history (JSON
+      format) and see a variety of message statistics!
+    </p>
+    <button type="button" class="round-btn-{{socialPlatform}}" data-bs-toggle="modal" data-bs-target="#howToDownload">
+      <svg style="fill: white" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24">
+        <g fill="none">
+          <path d="M12 15V3m0 12l-4-4m4 4l4-4" stroke="white" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M2 17l.621 2.485A2 2 0 0 0 4.561 21H19.439a2 2 0 0 0 1.94-1.515L22 17" stroke="white"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+      </svg>
+      How to Download
+    </button>
+
+    {% if errorMsg == "Invalid Name" %} {{modal("indexError", "File Upload
+    Error", "Invalid Name")}}
+
+    <script>
+      $(document).ready(function () {
+        $("#indexError").modal("show");
+      });
+    </script>
+
+    {% endif %} {% if errorMsg == "Invalid File" %} {% call modal("indexError",
+    "File Upload Error") %}
+    <p>Please upload a valid {{socialPlatform}} chat history JSON file</p>
+    {% endcall %}
+
+    <script>
+      $(document).ready(function () {
+        $("#indexError").modal("show");
+      });
+    </script>
+    {% endif %} {% call modal("howToDownload", "How to Download") %}
+    <p>
+      This is how to download your {{socialPlatform | capitalize}} message chat
+      history.
+    </p>
+    {% endcall %}
+
+    <div class="mt-3" style="display: flex; align-items: center">
+      {{form(socialPlatform)}}
 
 
-  <div class="jumbotron jumbotron-fluid">
-      <div class="container home-width mt-4">
-        {% if error == "inputerror" %}
-          <p>{{error}}</p>
-          <h1>POG</p>
-        {% endif %}
-
-        <h1 class="mt-5" style="color: black; font-size: 4rem">{{socialPlatform | capitalize}}</h1>
-        <p>
-          Upload your downloaded {{socialPlatform | capitalize}} chat history (JSON format) and see a variety of message statistics!
-        </p>
-        <button type="button" class="round-btn-{{socialPlatform}}" data-bs-toggle="modal" data-bs-target="#howToDownload">
-          <svg style="fill:white" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24">
-            <g fill="none">
-              <path d="M12 15V3m0 12l-4-4m4 4l4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M2 17l.621 2.485A2 2 0 0 0 4.561 21H19.439a2 2 0 0 0 1.94-1.515L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </g>
-          </svg>
-          How to Download
-        </button>
-
-        {% if errorMsg == "Invalid Name" %}
-
-          {{modal("indexError", "File Upload Error", "Invalid Name")}}
-
-          <script>
-            $(document).ready(function () {
-              $("#indexError").modal('show');
-            });
-          </script>
-
-        {% endif %}
-
-        {% if errorMsg == "Invalid File" %}
-
-          {% call modal("indexError", "File Upload Error") %}
-          <p>Please upload a valid {{socialPlatform}} chat history JSON file</p>
-          {% endcall %}
-
-          <script>
-            $(document).ready(function () {
-              $("#indexError").modal('show');
-            });
-          </script>
-        {% endif %}
-
-        {% call modal("howToDownload", "How to Download") %}
-        <p>This is how to download your {{socialPlatform | capitalize}} message chat history.</p>
-        {% endcall %}
-
-        
-        <div class="mt-3">
-
-          {{form(socialPlatform)}}
-          
-
-          </div>
-
-          <hr class="mt-4">
-          {% if showDownload %}
-          <p>Input your {{socialPlatform | capitalize}} username below and download a CSV file!</p>
-
-          <form id="uploadForm" action="#" method="POST">
-              <div class="sidebyside" style="display:flex;">
-              <div id="select-dropdown">
-              <select class="selectBox" name="fname" id="fname" style="margin-right: 10px">
-                {% for name in names %}
-                  <option value="{{name}}">{{name}}</option>
-                {% endfor %}
-                
-              </select>
-              <span class="custom-arrow">&#9660;</span>
-              </div>
-              
-              
-              
-              <button type="submit" class="round-btn-{{socialPlatform}} value="Submit">Download</button> 
-              </div>
-            </div>
-          </form>
-          
-          {% endif %}
-
-          {% call modal("slangMeaning", "Slang Meaning") %}
-          {% for keys in template["slangMeaning"] %}
-            <p><b>{{keys}}</b>
-              meaning:
-              {{template["slangMeaning"][keys]}}</p>
-          {% endfor %}
-          {% endcall %}
-        </div>  
-
+      <div id="spinner" style="display: none;" class="spinner-border mx-3" role="status">
+        <span class="sr-only"></span>
       </div>
-      
 
-      {% if (template) %}
-        <div class="container home-width mt-4">
-          <div style="padding:0rem" class="container">
-            <div class="mb-3">
-              <button style="display:inline" type="button" class="round-btn-{{socialPlatform}}" data-bs-toggle="modal" data-bs-target="#slangMeaning">
-                Slang Meaning
-              </button>
-            </div>
+    </div>
 
-            <div class="row">
-              {{pieChart(id="commonWords", yaxis="", xaxis=template["topTenWords"], title="Most Common Words", legend=template["topTenWords"], singleArray=template["topTenWordCount"])}}
-              {{msgWordsCountGraph(id="msgWordCount", type="bar", yaxis="y: {beginAtZero: true}", xaxis=template["names"], title="Messages and Word Sent", legend=['Total Messages', 'Total Words'], singleArray=template["totalMessages"], doubleArray=template["totalWords"])}}
-            </div>
-            <div class="row">
-              {{pieChart(id="commonSlang", yaxis="", xaxis=template["topTenSlang"], title="Most Common Slang", legend=template["topTenSlang"], singleArray=template["topTenSlangCount"])}}
-              {{slangCountGraph(id="slangSentCount", yaxis="y: {beginAtZero: true}", xaxis=template["names"], legend=template["topTenSlang"], singleArray=template["topTenSlangCountPerPerson"], slangListLength=template["slangListLength"])}}
-            </div>
-          </div>
+    <hr class="mt-4" />
+    {% if showDownload %}
+    <p>
+      Input your {{socialPlatform | capitalize}} username below and download a
+      CSV file!
+    </p>
+
+    <form id="uploadForm" action="#" method="POST">
+      <div class="sidebyside" style="display: flex">
+        <div id="select-dropdown">
+          <select class="selectBox" name="fname" id="fname" style="margin-right: 10px">
+            {% for name in names %}
+            <option value="{{name}}">{{name}}</option>
+            {% endfor %}
+          </select>
+          <span class="custom-arrow">&#9660;</span>
         </div>
 
-      {% endif %}
-    
+        <button type="submit" class="round-btn-{{socialPlatform}}" value="Submit">
+          Download
+        </button>
+      </div>
+    </form>
 
-  {% endblock %}
+    {% endif %}
+
+    {% call modal("slangMeaning", "Slang Meaning (Urban Dictionary)") %}
+    {% for keys in template["slangMeaning"] %}
+    <p><b>{{keys}}</b> meaning: {{template["slangMeaning"][keys]}}</p>
+    {% endfor %} {% endcall %}
+  </div>
+</div>
+
+{% if (template) %}
+<div class="container home-width mt-4">
+  <div style="padding: 0rem" class="container">
+    <div class="mb-3">
+      <button style="display: inline" type="button" class="round-btn-{{socialPlatform}}" data-bs-toggle="modal"
+        data-bs-target="#slangMeaning">
+        Slang Meaning
+      </button>
+    </div>
+
+    <div class="row">
+      {{pieChart(id="commonWords", yaxis="", xaxis=template["topTenWords"],
+      title="Most Common Words", legend=template["topTenWords"],
+      singleArray=template["topTenWordCount"])}}
+      {{msgWordsCountGraph(id="msgWordCount", type="bar", yaxis="y:
+      {beginAtZero: true}", xaxis=template["names"], title="Messages and Word
+      Sent", legend=['Total Messages', 'Total Words'],
+      singleArray=template["totalMessages"],
+      doubleArray=template["totalWords"])}}
+    </div>
+    <div class="row">
+      {{pieChart(id="commonSlang", yaxis="", xaxis=template["topTenSlang"],
+      title="Most Common Slang", legend=template["topTenSlang"],
+      singleArray=template["topTenSlangCount"])}}
+      {{slangCountGraph(id="slangSentCount", yaxis="y: {beginAtZero: true}",
+      xaxis=template["names"], legend=template["topTenSlang"],
+      singleArray=template["topTenSlangCountPerPerson"],
+      slangListLength=template["slangListLength"])}}
+    </div>
+  </div>
+</div>
+
+{% endif %} {% endblock %}
+
+
+

@@ -36,7 +36,7 @@ async def relatedSlang(keyword):
     return None
 
 
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+# asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 # print(asyncio.run(get_Slang(testData2)))
 

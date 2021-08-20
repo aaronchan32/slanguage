@@ -151,7 +151,7 @@ async def initialFilter (session, word):
             return ''
 
 
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+# asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 # print(asyncio.run(main(commonFilter(dummyData))))
 # print("--- %s seconds ---" % (time.time() - start_time))

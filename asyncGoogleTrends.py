@@ -2,8 +2,8 @@ from pytrendsasync.request import TrendReq
 from datetime import date
 import time, sys, asyncio
 
-
-slangTrend = TrendReq(timeout=(10, 25), retries=2, backoff_factor=0.1)
+#timeout=(10, 25)
+slangTrend = TrendReq(timeout=None, retries=2, backoff_factor=0.1)
 category = "0"
 location = ""
 property = ""

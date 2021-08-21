@@ -120,7 +120,7 @@
   </div>
 
   {% for name in template["personalSlangDict"] %}
-    <p><b>{{name}}'s Slang<b></p>
+    <p><b>{{name}}'s Slang</b></p>
     {% for slang, count in template["personalSlangDict"][name].items() %}
     <p>{{slang}} was said {{count}} times.</p>
     {% endfor %}

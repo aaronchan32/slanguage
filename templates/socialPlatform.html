@@ -4,6 +4,7 @@
 
 <div class="jumbotron jumbotron-fluid">
   <div class="container home-width mt-4">
+
     {% if error %}
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
       <p>Please upload a valid JSON file!</p>
@@ -31,26 +32,8 @@
       How to Download
     </button>
 
-    {% if errorMsg == "Invalid Name" %} {{modal("indexError", "File <Uplo></Uplo>ad
-    Error", "Invalid Name")}}
 
-    <script>
-      $(document).ready(function () {
-        $("#indexError").modal("show");
-      });
-    </script>
-
-    {% endif %} {% if errorMsg == "Invalid File" %} {% call modal("indexError",
-    "File Upload Error") %}
-    <p>Please upload a valid {{socialPlatform}} chat history JSON file</p>
-    {% endcall %}
-
-    <script>
-      $(document).ready(function () {
-        $("#indexError").modal("show");
-      });
-    </script>
-    {% endif %} {% call modal("howToDownload", "How to Download") %}
+    {% call modal("howToDownload", "How to Download") %}
     <p>
       This is how to download your {{socialPlatform | capitalize}} message chat
       history.
@@ -69,7 +52,7 @@
 
     <hr class="mt-4" />
     {% if showDownload %}
-    <p>
+    <p class="mb-3">
       Input your {{socialPlatform | capitalize}} username below and download a
       CSV file!
     </p>
@@ -97,6 +80,11 @@
     {% for keys in template["slangMeaning"] %}
     <p><b>{{keys}}</b> meaning: {{template["slangMeaning"][keys]}}</p>
     {% endfor %} {% endcall %}
+
+
+
+
+
   </div>
 </div>
 
@@ -130,6 +118,20 @@
       slangListLength=template["slangListLength"])}}
     </div>
   </div>
+
+  {% for name in template["personalSlangDict"] %}
+    <p><b>{{name}}'s Slang<b></p>
+    {% for slang, count in template["personalSlangDict"][name].items() %}
+    <p>{{slang}} was said {{count}} times.</p>
+    {% endfor %}
+    
+  {% endfor %}
+
 </div>
 
-{% endif %} {% endblock %}
+{% endif %}
+
+
+
+
+{% endblock %}

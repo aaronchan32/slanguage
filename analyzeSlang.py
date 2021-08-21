@@ -17,6 +17,7 @@ class AnalyzeSlang:
         self.__totalSent = None
         self.__topTenSlangWords = {}
         self.__slangCountPerPerson = {}
+        self.__personalSlangDict = {}
 
         self.__getJSON() 
         self.__getSlang()
@@ -156,6 +157,25 @@ class AnalyzeSlang:
                 else:
                     self.__slangCountPerPerson[slang] = [slangCount]
 
+    def __getPersonalSlangDict(self):
+        for name in self.__names: 
+            personalSlangCount = {}           
+            for slang in [*self.__slangs]:
+                for message in self.__data["messages"]:
+                    if self.__socialMedia == "facebook" or self.__socialmedia == "instagram":
+                        if "content" in message and message["sender_name"] == name:
+                            sentence = message["content"].split()
+                            for word in sentence:
+                                if word == slang:
+                                    if word in personalSlangCount:
+                                        personalSlangCount[slang] +=  1
+                                    else: 
+                                        personalSlangCount[slang] = 1
+            self.__personalSlangDict[name] = personalSlangCount
+                                    
+        print("Personal Slang Dict:", self.__personalSlangDict)
+        return self.__personalSlangDict
+
     def createCSV(self, userName):
         print("USername:",userName)
         for name in self.__names:
@@ -187,7 +207,8 @@ class AnalyzeSlang:
                     "topTenSlangCount": list(self.__topTenSlangWords.values()),
                     "topTenSlangCountPerPerson": list(self.__slangCountPerPerson.values()),
                     "slangMeaning": self.__slangDict,
-                    "slangListLength": len(self.__topTenSlangWords.keys())
+                    "slangListLength": len(self.__topTenSlangWords.keys()),
+                    "personalSlangDict": self.__getPersonalSlangDict(),
                     }
 
         return(template)

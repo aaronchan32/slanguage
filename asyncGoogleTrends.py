@@ -28,8 +28,7 @@ async def relatedSlang(keyword):
     await slangTrend.build_payload([keyword], category, timeframe, location, gprop=property)
     data = await slangTrend.related_queries()
     if data[keyword]["top"] is not None:
-        relatedQueriesString = ' '.join(
-            data[keyword]["top"]["query"].iloc[0:11])
+        relatedQueriesString = ' '.join(data[keyword]["top"]["query"].iloc[0:11])
         if "mean" in relatedQueriesString or "definition" in relatedQueriesString:
             return keyword
         return None 

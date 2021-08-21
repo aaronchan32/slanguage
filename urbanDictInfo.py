@@ -1,4 +1,4 @@
-import requests, aiohttp, asyncio, time, json, string
+import requests, aiohttp, asyncio, time, json, string, sys
 from datetime import date
 from collections import ChainMap
 
@@ -18,32 +18,6 @@ def getUpvotes(file):
     upvotes = str(file["list"][0]["thumbs_up"])
     return upvotes
 
-# def getDownvotes(file):
-#     downvotes = str(file["list"][0]["thumbs_down"])
-#     return downvotes
-
-
-# def getUploadDate(file):
-#     uploadYr = file["list"][0]["written_on"][0: 10]
-#     return uploadYr
-
-# def getSlang(myDict):
-#     slangDict = {}
-#     for word in myDict:
-#         url = "http://api.urbandictionary.com/v0/define?term={}".format(word)
-#         response = requests.get(url)
-#         if response.ok:
-#             file = response.json()
-#             # if int(getUploadDate(file)[0: 4]) > currentDate.year - 10:
-#             if len(file["list"]) != 0:
-#                 slangDict[word] = {
-#                     "Meaning": getMeaning(file),
-#                     "Upvotes": getUpvotes(file),
-#                     "Downvotes": getDownvotes(file),
-#                     "UploadDate": getUploadDate(file),
-#                     "URL": "https://www.urbandictionary.com/define.php?term={}".format(word)
-#                 }
-#     return slangDict
 
 mostCommonWordsSet = set(line.strip() for line in open ('mostCommonWords.txt'))
 f = open ('commonSlang.json', "r")
@@ -151,8 +125,6 @@ async def initialFilter (session, word):
             return ''
 
 
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
-# print(asyncio.run(main(commonFilter(dummyData))))
-# print("--- %s seconds ---" % (time.time() - start_time))
+if sys.version_info[0] == 3 and sys.version_info[1] >= 8 and sys.platform.startswith('win'):
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 

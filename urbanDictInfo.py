@@ -19,9 +19,14 @@ def getUpvotes(file):
     return upvotes
 
 
-mostCommonWordsSet = set(line.strip() for line in open ('mostCommonWords.txt'))
+# mostCommonWordsSet = set(line.strip() for line in open ('mostCommonWords.txt'))
 f = open ('commonSlang.json', "r")
 commonSlangJson = json.loads(f.read())
+
+g = open ('mostCommonWords.json', "r")
+mostCommonWordsSet = json.loads(g.read())
+
+
     
 
 def commonFilter(json):
@@ -40,12 +45,17 @@ def commonFilter(json):
                     if punctuatedWord in commonSlangJson:
                         finalSlang.append(punctuatedWord)
                         continue
+                    if word in mostCommonWordsSet:
+                        continue
+                    if punctuatedWord in mostCommonWordsSet:
+                        continue
+                    
                     if len(punctuatedWord) > 2:
                         if (punctuatedWord[-1] == 's' or punctuatedWord[-1] == 'd') and (punctuatedWord[0:-1] in mostCommonWordsSet):
                             continue
                         if (punctuatedWord[-2:] == 'nt' or punctuatedWord[-2:] == 've' or punctuatedWord[-2:] == 're' or punctuatedWord[-2:] == 'er' or punctuatedWord[-2:] == 'ly' or punctuatedWord[-2:] == 'ed') and (punctuatedWord[0:-3] in mostCommonWordsSet or punctuatedWord[0:-2] in mostCommonWordsSet) or punctuatedWord[0:-1] in mostCommonWordsSet:
                             continue
-                        if (punctuatedWord not in mostCommonWordsSet) and len(word) < 50:
+                    if (punctuatedWord not in mostCommonWordsSet) and len(word) < 50:
                             tempSlang.append(punctuatedWord)
                             continue
 

@@ -162,8 +162,18 @@ class AnalyzeSlang:
             personalSlangCount = {}           
             for slang in [*self.__slangs]:
                 for message in self.__data["messages"]:
-                    if self.__socialMedia == "facebook" or self.__socialmedia == "instagram":
+                    if self.__socialMedia == "facebook" or self.__socialMedia == "instagram":
                         if "content" in message and message["sender_name"] == name:
+                            sentence = message["content"].split()
+                            for word in sentence:
+                                if word == slang:
+                                    if word in personalSlangCount:
+                                        personalSlangCount[slang] +=  1
+                                    else: 
+                                        personalSlangCount[slang] = 1
+
+                    if self.__socialMedia == "discord":
+                        if "content" in message and message["author"]["name"] == name:
                             sentence = message["content"].split()
                             for word in sentence:
                                 if word == slang:

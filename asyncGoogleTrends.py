@@ -22,6 +22,7 @@ async def get_Slang(wordList):
 
 
 async def relatedSlang(keyword):
+    
     await slangTrend.build_payload([keyword], category, timeframe, location, gprop=property)
     data = await slangTrend.related_queries()
     if data[keyword]["top"] is not None:

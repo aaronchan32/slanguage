@@ -145,13 +145,13 @@ async def initialFilter (session, word):
     async with session.get(url) as response:
         file = await response.json()
         if response.status == 200:
-            if file["list"] != [] and int(getUpvotes(file)) > 100:
+            if file["list"] != [] and int(getUpvotes(file)) > 300:
                 return word
         else:
             return ''
 
 
-# asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 # print(asyncio.run(main(commonFilter(dummyData))))
 # print("--- %s seconds ---" % (time.time() - start_time))

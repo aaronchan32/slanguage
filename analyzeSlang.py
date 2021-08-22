@@ -27,35 +27,30 @@ class AnalyzeSlang:
         self.__getTotalSent()
         self.__getTopTenSlangWords()
         self.__getTopTenSlangCountPerPerson()
-        self.__newSlang()
+        # self.__newSlang()
 
     def __getSlang(self):
         if (self.__data) != None:
             slangList = []
             slangDict = commonFilter(self.__data)
             updatedSlangList = asyncio.run(get_Slang(slangDict["tempSlang"]))
-            slangDict["tempSlang"] = updatedSlangList
-            slangDict = asyncio.run(finalUrbanFilter(slangDict["finalSlang"], slangDict["tempSlang"]))
+            combinedSlangList = slangDict['finalSlang']+ updatedSlangList
+            slangDict = asyncio.run(finalUrbanFilter(combinedSlangList))
             self.__slangDict = slangDict
             for slang in slangDict:
                 slangList.append(slang)
             self.__slangs = slangList
 
-    def __newSlang(self):
-        if (self.__slangs) != None:
-            f = open('commonSlang.json', "r")
-            commonSlangJson = json.loads(f.read())
-            newList = {}
-            for word in self.__slangs:
-                punctuatedWord = word.lower().translate(
-                    str.maketrans('', '', string.punctuation)).replace('?', '')
-                if punctuatedWord not in commonSlangJson:
-                    newList[word.strip()] = ''
-            with open('commonSlang.json', 'r+') as file:
-                data = json.load(file)
-                data.update(newList)
-                file.seek(0)
-                json.dump(data, file)
+    # def __newSlang(self):
+    #     if (self.__slangs) != None:
+    #         with open ("commonSlang.json", "r") as f:
+    #             commonSlangJson = json.load(f)
+    #         for word in self.__slangs:
+    #             punctuatedWord = word.lower().translate(str.maketrans('', '', string.punctuation)).replace('?', '')
+    #             if punctuatedWord not in commonSlangJson:
+    #                 commonSlangJson[word.strip()] = ''
+    #         with open ("commonSlang.json", "w") as f:
+    #             json.dump(commonSlangJson, f)
 
     def __getJSON(self):
         mydict = (request.files['file']).read()
@@ -182,12 +177,9 @@ class AnalyzeSlang:
                                     else: 
                                         personalSlangCount[slang] = 1
             self.__personalSlangDict[name] = personalSlangCount
-                                    
-        print("Personal Slang Dict:", self.__personalSlangDict)
         return self.__personalSlangDict
 
     def createCSV(self, userName):
-        print("USername:",userName)
         for name in self.__names:
             if userName == name:
                 self.__userExists = True

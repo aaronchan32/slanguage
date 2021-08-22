@@ -20,14 +20,12 @@ def getUpvotes(file):
 
 
 # mostCommonWordsSet = set(line.strip() for line in open ('mostCommonWords.txt'))
-f = open ('commonSlang.json', "r")
-commonSlangJson = json.loads(f.read())
+with open ("commonSlang.json", "r") as f:
+    commonSlangJson = json.load(f)
 
-g = open ('mostCommonWords.json', "r")
-mostCommonWordsSet = json.loads(g.read())
+with open ("mostCommonWords.json", "r") as f:
+    mostCommonWordsSet = json.load(f)
 
-
-    
 
 def commonFilter(json):
     start_time = time.time()
@@ -53,7 +51,7 @@ def commonFilter(json):
                     if len(punctuatedWord) > 2:
                         if (punctuatedWord[-1] == 's' or punctuatedWord[-1] == 'd') and (punctuatedWord[0:-1] in mostCommonWordsSet):
                             continue
-                        if (punctuatedWord[-2:] == 'nt' or punctuatedWord[-2:] == 've' or punctuatedWord[-2:] == 're' or punctuatedWord[-2:] == 'er' or punctuatedWord[-2:] == 'ly' or punctuatedWord[-2:] == 'ed') and (punctuatedWord[0:-3] in mostCommonWordsSet or punctuatedWord[0:-2] in mostCommonWordsSet) or punctuatedWord[0:-1] in mostCommonWordsSet:
+                        if (punctuatedWord[-2:] == 'nt' or punctuatedWord[-2:] == 've' or punctuatedWord[-2:] == 're' or punctuatedWord[-2:] == 'er' or punctuatedWord[-2:] == 'ly' or punctuatedWord[-2:] == 'ed' or punctuatedWord[-2:] == 'll') and (punctuatedWord[0:-3] in mostCommonWordsSet or punctuatedWord[0:-2] in mostCommonWordsSet or punctuatedWord[0:-1] in mostCommonWordsSet):
                             continue
                     if (punctuatedWord not in mostCommonWordsSet) and len(word) < 50:
                             tempSlang.append(punctuatedWord)
@@ -61,54 +59,46 @@ def commonFilter(json):
 
 
     slangDict["finalSlang"] = list(set(finalSlang))
-    slangDict["tempSlang"] = list(set(asyncio.run(initialUrbanFilter(tempSlang))))
+    slangDict["tempSlang"] = list(set(asyncio.run(initialUrbanFilter(tempSlang)))) #Checks to see if it exists in Urban Dictionary and has over 300 upvotes
     print("commonFilter --- %s seconds ---" % (time.time() - start_time))
     return slangDict
                     
-async def finalUrbanFilter(finalList, tempList): 
+async def finalUrbanFilter(slangList): 
     
     async with aiohttp.ClientSession() as session:
         start_time = time.time()
         tasks = []
-        for word in finalList:
-            task1 = asyncio.ensure_future(getWordDataFinal(session, word))
-            tasks.append(task1)
-        
-        for word in tempList:
-            task2 = asyncio.ensure_future(getWordDataTemp(session, word))
-            tasks.append(task2)
+
+        for word in slangList:
+            task = asyncio.ensure_future(getWordMeaning(session, word))
+            tasks.append(task)
 
         slangDict = await asyncio.gather(*tasks)
         slangArray = list(filter(None, slangDict))
         
         slangDict = dict(ChainMap(*slangArray))
+        with open ("commonSlang.json", "w") as f:
+            json.dump(commonSlangJson, f)
         print("urbanFilter --- %s seconds ---" % (time.time() - start_time))
         return slangDict
 
 
-async def getWordDataTemp(session, word):
+async def getWordMeaning(session, word):
     slangDict = {}
     url = "http://api.urbandictionary.com/v0/define?term={}".format(word)
 
     async with session.get(url) as response:
         file = await response.json()
         if response.status == 200:
-            if file["list"] != [] and int(getUpvotes(file)) > 100:
-                slangDict[word] = getMeaning(file)
+            #if slang already exists in file and has a definition
+            if file["list"] != [] and word in commonSlangJson and commonSlangJson[word] != "":  
+                slangDict[word] = commonSlangJson[word]
                 return slangDict
-        else:
-            return {}
 
-async def getWordDataFinal(session, word):
-    slangDict = {}
-    url = "http://api.urbandictionary.com/v0/define?term={}".format(word)
-
-    async with session.get(url) as response:
-        file = await response.json()
-        if response.status == 200:
-            if file["list"] != []:
-                slangDict[word] = getMeaning(file)
-                return slangDict
+            commonSlangJson[word] = getMeaning(file)
+            slangDict[word] = commonSlangJson[word]
+            
+            return slangDict
         else:
             return {}
 

@@ -2,6 +2,7 @@
 {% block content %}
 {% from 'macros.html' import pieChart, msgWordsCountGraph, slangCountGraph, modal, form %}
 
+
 <div class="jumbotron jumbotron-fluid">
   <div class="container home-width mt-4">
 
@@ -57,15 +58,15 @@
       CSV file!
     </p>
 
-    <form id="uploadForm" action="#" method="POST">
+    <form id="selectForm" action="#" method="POST">
       <div class="sidebyside" style="display: flex">
-        <div id="select-dropdown">
+        <div class="select-dropdown">
           <select class="selectBox" name="fname" id="fname" style="margin-right: 10px">
             {% for name in names %}
             <option value="{{name}}">{{name}}</option>
             {% endfor %}
           </select>
-          <span class="custom-arrow">&#9660;</span>
+          <span class="custom-arrow">&#9662;</span>
         </div>
 
         <button type="submit" class="round-btn-{{socialPlatform}}" value="Submit">
@@ -80,10 +81,6 @@
     {% for keys in template["slangMeaning"] %}
     <p><b>{{keys}}</b> meaning: {{template["slangMeaning"][keys]}}</p>
     {% endfor %} {% endcall %}
-
-
-
-
 
   </div>
 </div>
@@ -104,7 +101,7 @@
       singleArray=template["topTenWordCount"])}}
       {{msgWordsCountGraph(id="msgWordCount", type="bar", yaxis="y:
       {beginAtZero: true}", xaxis=template["names"], title="Messages and Word
-      Sent", legend=['Total Messages', 'Total Words'],
+      Sent Per Person", legend=['Total Messages', 'Total Words'],
       singleArray=template["totalMessages"],
       doubleArray=template["totalWords"])}}
     </div>
@@ -119,19 +116,64 @@
     </div>
   </div>
 
-  {% for name in template["personalSlangDict"] %}
-    <p><b>{{name}}'s Slang</b></p>
-    {% for slang, count in template["personalSlangDict"][name].items() %}
-    <p>{{slang}} was said {{count}} times.</p>
-    {% endfor %}
-    
-  {% endfor %}
+  <div class="container">
+    <div class="row-container">
+
+      <p style="margin-right: 1rem; margin-bottom: 0;">Display:</p>
+      <div class="select-dropdown">
+        <select style="margin-right:0.5rem" class="selectBox" name="userList" id="userList"
+          onchange="selectedUsername()">
+          <option value="All Users">All <Users></Users>
+          </option>
+          {% for name in names %}
+          <option value="{{name}}">{{name}}</option>
+          {% endfor %}
+        </select>
+        <span class="custom-arrow">&#9662;</span>
+      </div>
+
+      <div id="searchSlang">
+        <input style="margin-left: auto;" type="text" name="search" id="search" placeholder="Search Slang">
+      </div>
+    </div>
+
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Slang</th>
+          <th>Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for name in template["personalSlangDict"] %}
+        {% for slang, count in template["personalSlangDict"][name].items() %}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{slang}}</td>
+          <td>{{count}} </td>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <script>
+    var socialMediaPlatform = "{{socialPlatform}}"
+    if (socialMediaPlatform == "facebook") {
+      console.log("test", socialMediaPlatform)
+      $(".custom-table thead tr").css("background-color", "#4790ff")
+    } else if (socialMediaPlatform == "instagram") {
+      $(".custom-table thead tr").css("background-color", "#ff893b")
+    } else if (socialMediaPlatform == "discord") {
+      $(".custom-table thead tr").css("background-color", "#717bff")
+    } else {
+      $(".custom-table thead tr").css("background-color", "#85ff8b")
+    }
+  </script>
+  <script src="{{ url_for('static', filename='styles/table.js') }}"></script>
 
 </div>
 
 {% endif %}
-
-
-
-
 {% endblock %}

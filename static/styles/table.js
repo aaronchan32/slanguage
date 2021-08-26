@@ -4,7 +4,6 @@ const tableRows = document.querySelectorAll("tbody tr");
 let dynamicMarginBottom = 0;
 alternateTableColor(tableRows)
 
-
 searchInput.addEventListener("keyup", function (event) {
   const inputtedValue = event.target.value.toLowerCase();
   dynamicMarginBottom = 0
@@ -16,7 +15,6 @@ searchInput.addEventListener("keyup", function (event) {
       row.style.display = "none"
       dynamicMarginBottom += 4.2
     }
-    
   });
 
   table.style.marginBottom = dynamicMarginBottom + "rem"
@@ -25,6 +23,7 @@ searchInput.addEventListener("keyup", function (event) {
 
 function selectedUsername() {
   currentUser = document.getElementById("userList").value;
+  table.style.marginBottom = "0rem"
   dynamicMarginBottom = 0
   if (currentUser == "All Users") {
     displayAllUsers()
@@ -37,9 +36,10 @@ function selectedUsername() {
         dynamicMarginBottom += 4.2
       }
     })
+    
+    alternateTableColor(tableRows)
   }
-  table.style.marginBottom = dynamicMarginBottom + "rem"
-  alternateTableColor(tableRows)
+  
 }
 
 function displayAllUsers() {
@@ -92,8 +92,8 @@ document.querySelectorAll(".custom-table th").forEach(headerCell => {
 })
 
 function alternateTableColor(){
-  $('tbody tr:even').css("background-color", "#f3f3f3")
-  $('tbody tr:odd').css("background-color", "white")
+  $('tbody tr:visible:even').css("background-color", "#f3f3f3")
+  $('tbody tr:visible:odd').css("background-color", "white")
 }
 
 

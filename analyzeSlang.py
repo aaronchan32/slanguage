@@ -42,7 +42,7 @@ class AnalyzeSlang:
             
             
             self.__slangs = slangList
-            print("self slang:", self.__slangs)
+            
 
     # def __newSlang(self):
     #     if (self.__slangs) != None:

@@ -33,12 +33,51 @@
       How to Download
     </button>
 
+    {% call modal("howToDownload", socialPlatform | capitalize) %}
 
-    {% call modal("howToDownload", "How to Download") %}
-    <p>
-      This is how to download your {{socialPlatform | capitalize}} message chat
-      history.
-    </p>
+    <div class="container">
+      {% if socialPlatform == 'facebook'%}
+      <p>
+        Begin by visiting this link: <a
+          href="https://www.facebook.com/dyi/?referrer=yfi_settings">https://www.facebook.com/dyi/?referrer=yfi_settings</a>
+      </p>
+      <p><b>1.</b> Under Date Range, select the time range in which you would like the chat history to be within.
+        Generally, you
+        can choose "All Time". </p>
+      <p><b>2.</b> Media Quality can be ignored.</p>
+      <p><b>3.</b> Under Format, please select JSON. The HTML file type IS NOT supported on this website.</p>
+      <p><b>4.</b> Lastly, click Deselect All and click the box next to Messages.</p>
+      <p><b>5.</b> Click Create File and within a few minutes or hours, a ZIP file will be generated for you!</p>
+      <img class="img-fluid mt-3"
+        src="{{url_for('static', filename='styles/assets/images/howtodownloadfacebook.png')}}">
+      <p class="mt-3">After downloading your ZIP file, unzip it and navigate to</p>
+      <p><b>messages</b> > <b>inbox</b> > <b>desired group chat/user folder</b> > <b>There's your JSON file!</b></p>
+      {% endif %}
+      {% if socialPlatform == 'instagram'%}
+      <p>Begin by visiting <a href="https://www.instagram.com/">Instagram</a></p>
+      <p><b>1.</b> Click on your profile picture on the top right, and navigate to <b>Settings</b></p>
+      <p><b>2.</b> On the left, navigate to <b>Privacy and Security</b></p>
+      <p><b>3.</b> Scroll down to <b>Data Download</b> and click on <b>Request Download</b></p>
+      <p><b>4.</b> Enter in your email, select <b>JSON</b> and click next to enter in your password. Within a few minutes or hours, a ZIP file will be generated for you!</p>
+      <img class="img-fluid mt-3"
+        src="{{url_for('static', filename='styles/assets/images/howtodownloadinstagram.png')}}">
+      <p class="mt-3">After downloading your ZIP file, unzip it and navigate to</p>
+      <p><b>messages</b> > <b>inbox</b> > <b>desired group chat/user folder</b> > <b>There's your JSON file!</b></p>
+      {% endif %}
+      {% if socialPlatform == 'discord'%}
+      <p>Begin by visiting this link: <a href="https://github.com/Tyrrrz/DiscordChatExporter">https://github.com/Tyrrrz/DiscordChatExporter</a></p>
+      <p>Install the Stable release of the graphical user interface (GUI) download (DiscordChatExporter.zip)</p>
+      <p>After downloading, export the ZIP and run <b>DiscordChatExporter.exe</b></p>
+      <p>Follow the instructions on the screen.</p>
+      <p><b>1.</b> Open Discord</p>
+      <p><b>2.</b> Press <b>Ctrl + Shift + I</b> to show developer tools</p>
+      <p><b>3.</b> Press <b>Ctrl + Shift + M</b> to toggle device toolbar</p>
+      <p><b>4.</b> Navigate to the <b>Application</b> Tab</p>
+      <p><b>5.</b> On the left, expand <b>Local Storage</b> and select <b>https://discord.com</b></p>
+      <p><b>6.</b> Type <b>token</b> in the <b>Filter</b> box</p>
+      <p>When exporting file, make sure the format is <b>JSON</b></p>
+      {% endif %}
+    </div>
     {% endcall %}
 
     <div class="mt-3" style="display: flex; align-items: center">
@@ -89,7 +128,7 @@
 <div class="container home-width mt-4">
   <div style="padding: 0rem" class="container">
     <div class="mb-3">
-      
+
     </div>
 
     <div class="row">
@@ -132,34 +171,34 @@
       <div id="searchSlang">
         <input style="margin-left: auto;" type="text" name="search" id="search" placeholder="Search Slang">
         <button style="display: inline" type="button" class="round-btn-{{socialPlatform}}" data-bs-toggle="modal"
-        data-bs-target="#slangMeaning">
-        Slang Meaning
-      </button>
+          data-bs-target="#slangMeaning">
+          Slang Meaning
+        </button>
       </div>
     </div>
 
-  <div class="table-wrapper">
-    <table class="custom-table">
-      <thead>
-        <tr>
-          <th>Username</th>
-          <th>Slang</th>
-          <th>Count</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for name in template["personalSlangDict"] %}
-        {% for slang, count in template["personalSlangDict"][name].items() %}
-        <tr>
-          <td>{{name}}</td>
-          <td>{{slang}}</td>
-          <td>{{count}} </td>
-        </tr>
-        {% endfor %}
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+    <div class="table-wrapper">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Slang</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for name in template["personalSlangDict"] %}
+          {% for slang, count in template["personalSlangDict"][name].items() %}
+          <tr>
+            <td>{{name}}</td>
+            <td>{{slang}}</td>
+            <td>{{count}} </td>
+          </tr>
+          {% endfor %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
   <script>
     var socialMediaPlatform = "{{socialPlatform}}"

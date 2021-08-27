@@ -61,6 +61,7 @@ def commonFilter(json):
     slangDict["finalSlang"] = list(set(finalSlang))
     slangDict["tempSlang"] = list(set(asyncio.run(initialUrbanFilter(tempSlang)))) #Checks to see if it exists in Urban Dictionary and has over 300 upvotes
     print("commonFilter --- %s seconds ---" % (time.time() - start_time))
+    print("line 64, this is slangDict:", slangDict)
     return slangDict
                     
 async def finalUrbanFilter(slangList): 

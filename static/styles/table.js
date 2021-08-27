@@ -40,7 +40,6 @@ function selectedUsername() {
     
     alternateTableColor(tableRows)
   }
-  
 }
 
 function displayAllUsers() {

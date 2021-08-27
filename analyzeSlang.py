@@ -39,7 +39,10 @@ class AnalyzeSlang:
             self.__slangDict = slangDict
             for slang in slangDict:
                 slangList.append(slang)
+            
+            
             self.__slangs = slangList
+            print("self slang:", self.__slangs)
 
     # def __newSlang(self):
     #     if (self.__slangs) != None:
@@ -111,11 +114,12 @@ class AnalyzeSlang:
     def __getTopTenSlangWords(self):
         slangCount = {}
         for slang in self.__slangs:
+            
             for message in self.__data["messages"]:
                 if "content" in message:
                     sentence = message["content"].split()
                     for word in sentence:
-                        if word == slang:
+                        if word == slang or word.lower().translate(str.maketrans('', '', string.punctuation)).replace('?', '') == slang:
                             if slang in slangCount:
                                 slangCount[slang] += 1
                             else:
@@ -138,13 +142,13 @@ class AnalyzeSlang:
                         if "content" in message and message["sender_name"] == name:
                             sentence = message["content"].split()
                             for word in sentence:
-                                if word == slang:
+                                if word == slang or word.lower().translate(str.maketrans('', '', string.punctuation)).replace('?', '') == slang:
                                     slangCount += 1
                     if self.__socialMedia == "discord":
                         if "content" in message and message["author"]["name"] == name:
                             sentence = message["content"].split()
                             for word in sentence:
-                                if word == slang:
+                                if word == slang or word.lower().translate(str.maketrans('', '', string.punctuation)).replace('?', '') == slang:
                                     slangCount += 1
 
                 if slang in self.__slangCountPerPerson:
@@ -161,8 +165,8 @@ class AnalyzeSlang:
                         if "content" in message and message["sender_name"] == name:
                             sentence = message["content"].split()
                             for word in sentence:
-                                if word == slang:
-                                    if word in personalSlangCount:
+                                if word == slang or word.lower().translate(str.maketrans('', '', string.punctuation)).replace('?', '') == slang:
+                                    if word in personalSlangCount or word.lower().translate(str.maketrans('', '', string.punctuation)).replace('?', '') in personalSlangCount:
                                         personalSlangCount[slang] +=  1
                                     else: 
                                         personalSlangCount[slang] = 1
@@ -171,8 +175,8 @@ class AnalyzeSlang:
                         if "content" in message and message["author"]["name"] == name:
                             sentence = message["content"].split()
                             for word in sentence:
-                                if word == slang:
-                                    if word in personalSlangCount:
+                                if word == slang or word.lower().translate(str.maketrans('', '', string.punctuation)).replace('?', '') == slang:
+                                    if word in personalSlangCount or word.lower().translate(str.maketrans('', '', string.punctuation)).replace('?', '') in personalSlangCount:
                                         personalSlangCount[slang] +=  1
                                     else: 
                                         personalSlangCount[slang] = 1

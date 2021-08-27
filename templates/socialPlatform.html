@@ -89,10 +89,7 @@
 <div class="container home-width mt-4">
   <div style="padding: 0rem" class="container">
     <div class="mb-3">
-      <button style="display: inline" type="button" class="round-btn-{{socialPlatform}}" data-bs-toggle="modal"
-        data-bs-target="#slangMeaning">
-        Slang Meaning
-      </button>
+      
     </div>
 
     <div class="row">
@@ -134,9 +131,14 @@
 
       <div id="searchSlang">
         <input style="margin-left: auto;" type="text" name="search" id="search" placeholder="Search Slang">
+        <button style="display: inline" type="button" class="round-btn-{{socialPlatform}}" data-bs-toggle="modal"
+        data-bs-target="#slangMeaning">
+        Slang Meaning
+      </button>
       </div>
     </div>
 
+  <div class="table-wrapper">
     <table class="custom-table">
       <thead>
         <tr>
@@ -158,17 +160,22 @@
       </tbody>
     </table>
   </div>
+  </div>
   <script>
     var socialMediaPlatform = "{{socialPlatform}}"
     if (socialMediaPlatform == "facebook") {
       console.log("test", socialMediaPlatform)
       $(".custom-table thead tr").css("background-color", "#4790ff")
+      $(".custom-table thead th").css("background-color", "#4790ff")
     } else if (socialMediaPlatform == "instagram") {
       $(".custom-table thead tr").css("background-color", "#ff893b")
+      $(".custom-table thead th").css("background-color", "#ff893b")
     } else if (socialMediaPlatform == "discord") {
       $(".custom-table thead tr").css("background-color", "#717bff")
+      $(".custom-table thead th").css("background-color", "#717bff")
     } else {
       $(".custom-table thead tr").css("background-color", "#85ff8b")
+      $(".custom-table thead th").css("background-color", "#85ff8b")
     }
   </script>
   <script src="{{ url_for('static', filename='styles/table.js') }}"></script>

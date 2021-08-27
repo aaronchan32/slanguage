@@ -4,6 +4,7 @@ const tableRows = document.querySelectorAll("tbody tr");
 let dynamicMarginBottom = 0;
 alternateTableColor(tableRows)
 
+
 searchInput.addEventListener("keyup", function (event) {
   const inputtedValue = event.target.value.toLowerCase();
   dynamicMarginBottom = 0

@@ -260,16 +260,55 @@ input:focus {
   pointer-events: none;
 }
 
-.custom-table {
-  margin: 1rem 0;
-  min-width: 60%;
+.table-wrapper {
+  height: 400px;
+  max-height: 400px;
+  overflow-y: auto;
+  text-align: left;
   border-radius: 1rem;
-  overflow: hidden;
+  margin-top: 10px;
   box-shadow: 0 0 0.2rem 0.2rem rgba(0, 0, 0, 0.15);
-  font-size:20px;
-  table-layout: fixed;
-  width: 60%;
+
 }
+
+thead, tbody { display: block; }
+
+tbody {
+  height: 20rem;
+  overflow-y: auto;    /* Trigger vertical scroll    */
+}
+
+.custom-table td,
+.custom-table th {
+  width: 40rem;
+}
+
+
+.custom-table {
+  font-size:20px;
+  width: 100%;
+  padding-right: 10px;
+  
+}
+
+/* tbody::-webkit-scrollbar {
+  width: 10px;
+}
+
+tbody::-webkit-scrollbar-track {
+  border-radius: 5px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.25)
+}
+
+tbody::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #4790ff;
+}
+
+tbody::-webkit-scrollbar-thumb:hover {
+  background-color: #47a6ff;
+} */
+
 
 .custom-table thead tr {
   /* background-color: #009879; */
@@ -290,7 +329,6 @@ input:focus {
 
 .row-container {
   display: flex;
-  width: 60%;
   justify-content: center;
   align-items: center;
 }

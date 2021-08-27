@@ -33,7 +33,7 @@
       How to Download
     </button>
 
-    {% call modal("howToDownload", socialPlatform | capitalize) %}
+    {% call modal("howToDownload", socialPlatform | capitalize, true) %}
 
     <div class="container">
       {% if socialPlatform == 'facebook'%}
@@ -116,7 +116,7 @@
 
     {% endif %}
 
-    {% call modal("slangMeaning", "Slang Meaning (Urban Dictionary)") %}
+    {% call modal("slangMeaning", "Slang Meaning (Urban Dictionary)", false) %}
     {% for keys in template["slangMeaning"] %}
     <p><b>{{keys}}</b> meaning: {{template["slangMeaning"][keys]}}</p>
     {% endfor %} {% endcall %}

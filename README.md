@@ -2,7 +2,7 @@
 
 > Learn what slang you and your friends use on Facebook, Instagram, and Discord!
 
-> Demo Site: https://mighty-mesa-99437.herokuapp.com/
+> Demo Site: https://my-slanguage.herokuapp.com/
 
 ## About
 ---

@@ -15,7 +15,7 @@ https://user-images.githubusercontent.com/42254254/150706351-30d80002-b442-42ed-
 
 ## Credit
 ---
-Aaron Chan  
-Kevin Luu  
-Patrick Wong  
-Ryan Hua 
+- [Aaron Chan](https://github.com/aaronchan32)  
+- [Kevin Luu](https://github.com/kevinluu0207)  
+- [Patrick Wong](https://github.com/PatrickW88)   
+- [Ryan Hua](https://github.com/ryanh888)

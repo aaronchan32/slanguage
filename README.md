@@ -2,7 +2,7 @@
 
 > Learn what slang you and your friends use on Facebook, Instagram, and Discord!
 
-> Demo Site: https://slanguage.onrender.com/
+> Demo Site: https://slanguage.onrender.com/ (Please note that Google Trends API is having some issues so viewing messaging statistics may take longer than normal or simply not work at all. Thank you for your patience.)
 
 ## About
 ---

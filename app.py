@@ -56,9 +56,10 @@ def renderSocialMediaTemplate(nameHTML, socialPlatform):
         error = "Please upload a valid JSON file"
         print(error)
         return render_template(nameHTML, template=None, socialPlatform=socialPlatform, error=error)
-    except:
+    except Exception as e:
         error = "Something went wrong. Please wait 1 minute before uploading another file."
-        print(error)
+        # print("what is the exception:")
+        # print(e)
         return render_template(nameHTML, template=None, socialPlatform=socialPlatform, error=error)
 
 
